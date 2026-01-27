@@ -2,6 +2,7 @@ from datetime import datetime, timezone
 from typing import Optional
 
 from fastapi import FastAPI, Query
+import psutil
 
 app = FastAPI(title="Personal Backend API")
 
@@ -47,3 +48,8 @@ def greet(
     if age is not None:
         return {"message": f"Hello {name}, you are {age} years old."}
     return {"message": f"Hello {name}"} 
+
+@app.get("/system/cpu")
+def get_cpu_usage():
+    cpu_percent = psutil.cpu_percent(interval=1)
+    return {"cpu_usage_percent": cpu_percent}
